@@ -90,7 +90,7 @@ def chain(out, name, routes):
 
 def jina(url):
     # Jina answers 403 to browser user agents, so it gets a plain one.
-    text = http(f"https://r.jina.ai/{url}", {"Accept": "text/plain", "User-Agent": "tiliaris-learn/1.0"}, timeout=60)
+    text = http(f"https://r.jina.ai/{url}", {"Accept": "text/plain", "User-Agent": "learn-skill/1.0"}, timeout=60)
     if re.search(r'"code":\s*4\d\d|Target URL returned error 4\d\d|AbuseAlleviationError', text[:600]):
         raise ValueError(text[:200].replace("\n", " "))
     return text

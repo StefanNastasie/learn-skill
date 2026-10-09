@@ -47,8 +47,8 @@ Articles, X, Reddit and pasted text work with just Python 3. For the rest:
 
 | For | Install (macOS) |
 |---|---|
-| Video and podcasts | `brew install yt-dlp ffmpeg` |
-| Videos without captions (local transcription) | `brew install whisper-cpp`, then download a model (below) |
+| Video and podcasts | `brew install yt-dlp` |
+| Videos without captions (local transcription) | `brew install ffmpeg whisper-cpp`, then download a model (below) |
 | GitHub links | `brew install gh` and `gh auth login` |
 
 Whisper model (about 1.6 GB, runs fully offline):

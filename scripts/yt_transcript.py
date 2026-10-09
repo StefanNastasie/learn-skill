@@ -51,9 +51,8 @@ def main():
     url = sys.argv[1]
     out = Path(sys.argv[2] if len(sys.argv) > 2 else "/tmp/learn")
     out.mkdir(parents=True, exist_ok=True)
-    for b in ("yt-dlp", "ffmpeg", "whisper-cli"):
-        if not shutil.which(b):
-            die(f"{b} missing (brew install {'whisper-cpp' if b == 'whisper-cli' else b})")
+    if not shutil.which("yt-dlp"):
+        die("yt-dlp missing (brew install yt-dlp)")
 
     # Instagram and Facebook answer nothing without a session, so borrow cookies on every call there.
     login = COOKIES and re.search(r"instagram\.com|facebook\.com|fb\.watch", url)
@@ -86,9 +85,13 @@ def main():
             print(f"ROUTE: captions ({vtts[0].name})\nMETA: {meta}\nTRANSCRIPT: {transcript}")
             return
 
-    # 3. Audio + local whisper.
+    # 3. Audio + local whisper. Only this route needs ffmpeg and whisper.cpp, so
+    # captioned videos work with yt-dlp alone.
+    for b in ("ffmpeg", "whisper-cli"):
+        if not shutil.which(b):
+            die(f"no usable captions, and transcribing needs {b} (brew install {'whisper-cpp' if b == 'whisper-cli' else b})")
     if not MODEL.exists():
-        die(f"captions blocked and whisper model missing: {MODEL}")
+        die(f"no usable captions, and the whisper model is missing: {MODEL}")
     # YouTube 403s audio URLs intermittently; a retry a few seconds later usually
     # gets a fresh URL that works. Format 18 (360p mp4 with sound) is the last resort.
     audio, errors = None, []
